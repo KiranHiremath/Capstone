@@ -1,3 +1,43 @@
-// Test if a new solution can be added for contract - SolnSquareVerifier
+var SquareVerifier = artifacts.require("Verifier.sol");
+var SolnSquareVerifier = artifacts.require('SolnSquareVerifier');
 
-// Test if an ERC721 token can be minted for contract - SolnSquareVerifier
+const fs = require('fs');
+let p = JSON.parse(fs.readFileSync("../../zokrates/code/square/proof.json"));
+
+const truffleAssert = require('truffle-assertions');
+
+
+contract('TestSolnSquareVerifier', accounts => {
+
+    const account_one   = accounts[0];
+    const account_two   = accounts[1];
+    const account_three = accounts[2];
+    const account_four  = accounts[3];
+
+    describe('test square verfier solution', function () {
+        beforeEach(async function () { 
+            this.contract = await SolnSquareVerifier.new(SquareVerifier.address, "TEST", "TEST");
+        })
+
+        // Test if a new solution can be added
+        it('should add a solution', async function () { 
+            let result = await this.contract.addSolution(p.proof.A, p.proof.A_p, p.proof.B, p.proof.B_p, p.proof.C, p.proof.C_p, p.proof.H, p.proof.K, p.input,{from:account_one});
+            truffleAssert.eventEmitted(result, 'SolutionAdded', (event) => { return true; }, 'missing SolutionAdded event');
+
+            //Solution add only once for same address
+            result = await this.contract.addSolution(p.proof.A, p.proof.A_p, p.proof.B, p.proof.B_p, p.proof.C, p.proof.C_p, p.proof.H, p.proof.K, p.input,{from:account_one});
+            truffleAssert.eventNotEmitted(result, 'SolutionAdded', (event) => { return true; }, 'SolutionAdded event must not emit');
+
+             //Solution add only once even when sender is different address
+             result = await this.contract.addSolution(p.proof.A, p.proof.A_p, p.proof.B, p.proof.B_p, p.proof.C, p.proof.C_p, p.proof.H, p.proof.K, p.input,{from:account_two});
+             truffleAssert.eventNotEmitted(result, 'SolutionAdded', (event) => { return true; }, 'SolutionAdded event must not emit');
+        })
+
+        // Test if an ERC721 token can be minted
+        it('should mint ERC721 token', async function () { 
+            await this.contract.addSolution(p.proof.A, p.proof.A_p, p.proof.B, p.proof.B_p, p.proof.C, p.proof.C_p, p.proof.H, p.proof.K, p.input,{from:account_one});
+            let result = await this.contract.mint(account_one, 100, {from:account_one});
+            truffleAssert.eventEmitted(result, 'Transfer', (event) => { return true; }, 'missing Transfer event');
+        })
+    })
+})

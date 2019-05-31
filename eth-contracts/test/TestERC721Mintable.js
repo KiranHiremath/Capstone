@@ -36,22 +36,34 @@ contract('TestERC721Mintable', accounts => {
             assert.equal(tokenURI,"https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/2","Incorrect token URI");
         })
 
-        it('should transfer token from one owner to another', async function () { 
-            
+        it('should transfer token from one owner to another by approved operator', async function () { 
+            this.contract.approve(account_three, 2, {from:account_one});
+            await this.contract.transferFrom(account_two, account_three, 2, {from:account_two});
+
+            let balance = await this.contract.balanceOf(account_two);
+            assert.equal(balance,2,"transfer from account balance off");
+
+            balance = await this.contract.balanceOf(account_three);
+            assert.equal(balance,2,"transfer to account balance off");
         })
     });
 
     describe('have ownership properties', function () {
         beforeEach(async function () { 
-            //this.contract = await ERC721MintableComplete.new("TEST1","TEST1",{from: account_one});
+            this.contract = await ERC721MintableComplete.new("TEST","TEST",{from: account_one});
         })
 
         it('should fail when minting when address is not contract owner', async function () { 
-            
+            try{
+                 await this.contract.mint.call(account_two,2,{from:account_two});
+            }catch(e){
+                assert.equal(true, e.message.search("Not a contract owner") >=0);
+            }
         })
 
         it('should return contract owner', async function () { 
-            
+            let owner = await this.contract.getOwner({from:account_two});
+            assert.equal(owner,account_one,"doesn't return contract owner");            
         })
 
     });
