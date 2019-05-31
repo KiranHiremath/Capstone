@@ -1,8 +1,14 @@
 // migrating the appropriate contracts
-var SquareVerifier = artifacts.require("./SquareVerifier.sol");
-var SolnSquareVerifier = artifacts.require("./SolnSquareVerifier.sol");
+var Verifier = artifacts.require("Verifier");
+var SolnSquareVerifier = artifacts.require("SolnSquareVerifier.sol");
 
-module.exports = function(deployer) {
-  deployer.deploy(SquareVerifier);
-  deployer.deploy(SolnSquareVerifier);
+module.exports = function(deployer,network,accounts) {
+  let name = "LUXHOME";
+  let symbol = "LUXH";
+
+  deployer.deploy(Verifier)
+  .then(() => {
+    return deployer.deploy(SolnSquareVerifier, Verifier.address, name, symbol );
+  }
+  )
 };
