@@ -2,9 +2,11 @@
 
 The capstone will build upon the knowledge you have gained in the course in order to build a decentralized housing product. 
 
-## Install
-npm install  
-truffle compile  
+### Test
+1. Clone the repository 
+2. Run `npm install` in your terminal
+3. Run a local blockchain by using Ganche client or GUI
+4. Run truffle test
 
 ## Run ZoKrates
 docker run -v <path to your project folder>:/home/zokrates/code -ti zokrates/zokrates /bin/bash  
@@ -21,10 +23,19 @@ Note : Move verifier.sol generated under eth/contracts folder
 truffle migrate --network rinkeby  
 
 ## Rinkeby Contract details
-Contract Address: 0xFf8bF25b76b8D41C292A59e97810E2C4d8295276  
-https://rinkeby.etherscan.io/address/0xFf8bF25b76b8D41C292A59e97810E2C4d8295276
+Contract Address: 0x3aa91a9b88da65ee0f03cc8302e57d9dddf6d556
+https://rinkeby.etherscan.io/address/0x3aa91a9b88da65ee0f03cc8302e57d9dddf6d556
 
 Note: Details included in rinkebyMigration.txt
+
+## Token Transfer Transaction
+https://rinkeby.etherscan.io/tx/0x03da67dc9256ffd0b35058058e40e187e356345c9dc9edcb84e1c7dd73b31cec
+
+## Open Sea 
+### OpenSea storefront
+https://rinkeby.opensea.io/category/luxhomev2  
+
+https://rinkeby.opensea.io/accounts/0x6d6ea9917880bc541cb374713ccd5bb924fdda74
 
 
 # Project Resources

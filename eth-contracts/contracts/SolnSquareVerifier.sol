@@ -24,6 +24,9 @@ contract SolnSquareVerifier is CustomERC721Token {
     constructor(address verifierAddress, string memory name, string memory symbol)
     CustomERC721Token(name, symbol) public {
         verifierContract = Verifier(verifierAddress);
+        for(uint256 i=1; i<11; i++ ) {
+            CustomERC721Token.mint(verifierAddress, i);
+        }
     }
  // TODO define a solutions struct that can hold an index & an address
 struct Solution {
@@ -84,45 +87,3 @@ function addSolution(
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

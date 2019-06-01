@@ -2,13 +2,10 @@
 var Verifier = artifacts.require("Verifier");
 var SolnSquareVerifier = artifacts.require("SolnSquareVerifier.sol");
 
-module.exports = function(deployer,network,accounts) {
-  let name = "LUXHOME";
-  let symbol = "LUXH";
-
+module.exports = function(deployer) {
   deployer.deploy(Verifier)
   .then(() => {
-    return deployer.deploy(SolnSquareVerifier, Verifier.address, name, symbol );
+    return deployer.deploy(SolnSquareVerifier, Verifier.address, "LUXHOME", "LUXH" );
   }
   )
 };

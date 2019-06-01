@@ -566,4 +566,3 @@ contract CustomERC721Token is ERC721Metadata {
         return true;
     }
 }
-
